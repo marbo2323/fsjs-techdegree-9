@@ -11,6 +11,7 @@ router.get(
   "/",
   asyncHandler(async (req, res) => {
     const courses = await Course.findAll({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
       include: [
         {
           model: User,
@@ -28,6 +29,7 @@ router.get(
   "/:id",
   asyncHandler(async (req, res, next) => {
     const course = await Course.findByPk(req.params.id, {
+      attributes: { exclude: ["createdAt", "updatedAt"] },
       include: [
         {
           model: User,
