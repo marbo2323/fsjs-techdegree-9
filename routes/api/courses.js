@@ -49,6 +49,7 @@ router.post(
   "/",
   asyncHandler(async (req, res) => {
     console.log(JSON.stringify(req.body));
+    const course = await Course.create(req.body);
     res.status(201).location("back").end();
   })
 );
@@ -56,9 +57,10 @@ router.post(
 // Update course identified by given primary key
 router.put(
   "/:id",
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req, res, next) => {
     const course = await Course.findByPk(req.params.id);
     if (course) {
+      await course.update(req.body);
       res.status(204).end();
     } else {
       next(notFoundError("Course not found"));
@@ -69,9 +71,10 @@ router.put(
 // delete course
 router.delete(
   "/:id",
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req, res, next) => {
     const course = await Course.findByPk(req.params.id);
     if (course) {
+      await course.delete();
       res.status(204).end();
     } else {
       next(notFoundError("Course not found"));
