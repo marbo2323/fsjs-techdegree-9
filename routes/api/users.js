@@ -9,7 +9,9 @@ router.get(
   "/",
   authenticateUser,
   asyncHandler(async (req, res) => {
-    const user = req.currentUser;
+    const user = await User.findByPk(req.currentUser.id, {
+      attributes: ["id", "firstName", "lastName", "emailAddress"],
+    });
     res.json(user);
   })
 );
