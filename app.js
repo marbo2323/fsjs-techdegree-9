@@ -40,9 +40,19 @@ app.use((err, req, res, next) => {
     console.error(`Global error handler: ${JSON.stringify(err.stack)}`);
   }
 
+  let errorMessage = err.message;
+
+  if (
+    err.name === "SequelizeValidationError" ||
+    err.name === "SequelizeUniqueConstraintError"
+  ) {
+    err.status = 400;
+    const errors = err.errors.map((err) => err.message);
+    errorMessage = errors.length > 1 ? errors : errors[0];
+  }
+
   res.status(err.status || 500).json({
-    message: err.message,
-    error: {},
+    message: errorMessage,
   });
 });
 
