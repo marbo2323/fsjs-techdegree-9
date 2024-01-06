@@ -47,6 +47,7 @@ router.get(
 // Add new course
 router.post(
   "/",
+  authenticateUser,
   asyncHandler(async (req, res) => {
     console.log(JSON.stringify(req.body));
     const course = await Course.create(req.body);
@@ -57,6 +58,7 @@ router.post(
 // Update course identified by given primary key
 router.put(
   "/:id",
+  authenticateUser,
   asyncHandler(async (req, res, next) => {
     const course = await Course.findByPk(req.params.id);
     if (course) {
@@ -71,6 +73,7 @@ router.put(
 // delete course
 router.delete(
   "/:id",
+  authenticateUser,
   asyncHandler(async (req, res, next) => {
     const course = await Course.findByPk(req.params.id);
     if (course) {
