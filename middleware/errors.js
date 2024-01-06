@@ -4,8 +4,12 @@ const statusError = (message, status) => {
   return error;
 };
 
-const notFoundError = (message) => {
+const notFoundError = (message = "Resourse not found") => {
   return statusError(message, 404);
 };
 
-module.exports = { statusError, notFoundError };
+const forbiddenError = (message = "Execute access forbidden") => {
+  return statusError(message, 403);
+};
+
+module.exports = { statusError, notFoundError, forbiddenError };

@@ -1,7 +1,7 @@
 const express = require("express");
 const { asyncHandler } = require("../../middleware/async-handler");
 const { authenticateUser } = require("../../middleware/auth-user");
-const { notFoundError } = require("../../middleware/errors");
+const { notFoundError, forbiddenError } = require("../../middleware/errors");
 const { Course, User } = require("../../models");
 
 const router = express.Router();
@@ -64,8 +64,12 @@ router.put(
   asyncHandler(async (req, res, next) => {
     const course = await Course.findByPk(req.params.id);
     if (course) {
-      await course.update(req.body);
-      res.status(204).end();
+      if (course.userId === req.currentUser.id) {
+        await course.update(req.body);
+        res.status(204).end();
+      } else {
+        next(forbiddenError());
+      }
     } else {
       next(notFoundError("Course not found"));
     }
@@ -79,8 +83,12 @@ router.delete(
   asyncHandler(async (req, res, next) => {
     const course = await Course.findByPk(req.params.id);
     if (course) {
-      await course.delete();
-      res.status(204).end();
+      if (course.userId === req.currentUser.id) {
+        await course.delete();
+        res.status(204).end();
+      } else {
+        next(forbiddenError());
+      }
     } else {
       next(notFoundError("Course not found"));
     }
