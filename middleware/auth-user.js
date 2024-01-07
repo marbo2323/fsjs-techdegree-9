@@ -4,7 +4,11 @@ const auth = require("basic-auth");
 const bcrypt = require("bcryptjs");
 const { User } = require("../models");
 
-// Middleware to authenticate the request using Basic Authentication.
+/* 
+  Middleware to authenticate the request using Basic Authentication.
+  This function is from the Teamtreehose.com REST API Authentication with Express course and adapted for this project.
+  https://teamtreehouse.com/library/rest-api-authentication-with-express-2
+*/
 exports.authenticateUser = async (req, res, next) => {
   // Parse the user's credentials from the Authorization header.
   const credentials = auth(req);
