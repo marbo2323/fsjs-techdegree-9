@@ -53,7 +53,10 @@ router.post(
   asyncHandler(async (req, res) => {
     console.log(JSON.stringify(req.body));
     const course = await Course.create(req.body);
-    res.status(201).location("back").end();
+    res
+      .status(201)
+      .location(req.baseUrl + "/" + course.id)
+      .end();
   })
 );
 
