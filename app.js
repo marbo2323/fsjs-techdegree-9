@@ -63,13 +63,15 @@ app.set("port", process.env.PORT || 5000);
 (async () => {
   try {
     await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
+    console.log("Database connection has been established successfully.");
+
+    // start listening on our port
+    const server = app.listen(app.get("port"), () => {
+      console.log(
+        `Express server is listening on port ${server.address().port}`
+      );
+    });
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
 })();
-
-// start listening on our port
-const server = app.listen(app.get("port"), () => {
-  console.log(`Express server is listening on port ${server.address().port}`);
-});
